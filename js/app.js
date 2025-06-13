@@ -7,7 +7,8 @@ const closeCart = document.querySelector('.close-cart');
 
 
 
-const cart = [];
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
 
 // activar o desactivar al hacer click
 cartIcon.addEventListener('click', () => {
@@ -85,7 +86,10 @@ function renderCart() {
       cartItem.querySelector('.increase').addEventListener('click', () => {
         item.quantity++;
         renderCart();
-      });
+      })
+      localStorage.setItem('cart', JSON.stringify(cart));
+
+      ;
      
       
   // Evento para eliminar el producto
@@ -124,6 +128,75 @@ function updateCartCount() {
 
 // Inicializar el contador al cargar la página
 updateCartCount();
+renderCart();
+
+
+
+
+
+
+
+
+document.getElementById('btn-pagar').addEventListener('click', async () => {
+  if (cart.length === 0) {
+    alert('Tu carrito está vacío.');
+    return;
+  }
+
+  // Preparar los datos para el backend
+  const productosParaBackend = [];
+
+  // Este fetch buscará los productos en tu backend por nombre y extraerá su ID real
+  // (esto requiere que tu backend tenga un endpoint para obtener productos por nombre, o idealmente tú guardes el ID en el carrito)
+
+  try {
+    // Opción 1: Si ya tienes los IDs de producto en el carrito, usa esto directamente
+    // Pero como tú solo guardas `title`, necesitamos obtener los IDs primero (Opción 2)
+
+    // Opción 2: Obtener todos los productos del backend y hacer match por nombre
+    const response = await fetch('https://localhost:7256/api/Productos'); // ← cambia esta URL por la real
+    const productosBackend = await response.json();
+
+    cart.forEach(item => {
+      const productoEncontrado = productosBackend.find(p => p.nombre === item.title);
+      if (productoEncontrado) {
+        productosParaBackend.push({
+          id: productoEncontrado.id,
+          cantidad: item.quantity
+        });
+      }
+    });
+
+    if (productosParaBackend.length === 0) {
+      alert('No se encontraron los productos ');
+      return;
+    }
+
+    // Enviar los productos con cantidad al backend para crear la preferencia
+    const resPago = await fetch('https://localhost:7256/api/pagos/crear-preferencia', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(productosParaBackend)
+    });
+
+    const data = await resPago.json();
+
+    if (data.url) {
+      window.location.href = data.url; // redirigir al pago de MercadoPago
+    } else {
+      alert('Error al crear preferencia de pago.');
+    }
+
+  } catch (error) {
+    console.error('Error al procesar el pago:', error);
+    alert('Hubo un problema al procesar el pago.');
+  }
+});
+
+
+
 
 
 
@@ -537,6 +610,7 @@ async function cargarProductos() {
 
       tarjeta.innerHTML = `
         <div class="col">
+        <div class="shadow card h-100" data-id="${producto.id}">
     <div class="shadow card h-100">
       <img src="https://localhost:7256/${producto.imagenUrl}" class="card-img-top" alt="${producto.nombre}">
       <div class="card-body">
