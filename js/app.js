@@ -103,8 +103,14 @@ function renderCart() {
   
 
   // Calcular y actualizar el total
-  const totalPrice = cart.reduce((sum, item) => sum + (parseFloat(item.price.replace(/[^0-9.]/g, '')) * item.quantity), 0);
-  document.getElementById('total-price').textContent = `Total: $${totalPrice.toFixed(0)}`;
+ const totalPrice = cart.reduce((sum, item) => {
+  return sum + (parseFloat(item.price.replace(/[^0-9.]/g, '')) * item.quantity);
+}, 0);
+
+document.getElementById('total-price').textContent = `Total: $${totalPrice.toLocaleString('es-CO', {
+  minimumFractionDigits: 0
+})}`;
+
 
    // Actualizar el contador del carrito
    updateCartCount();
@@ -617,13 +623,14 @@ async function cargarProductos() {
         <h5 class="card-title">${producto.nombre}</h5>
         <p class="card-text">${producto.descripcion}</p>
         <p class="card-text">Medidas: ${producto.medidas}</p>
-        <p id="price" class="price"><strong>${producto.precio} $</strong></p>
-        <a href="#" class="btn btn-primary add-to-cart">Agregar  
+        <p id="price" class="price"><strong>$ ${producto.precio} </str></p>
+          <p class="card-text">Stock: ${producto.cantidad}</p>
+         <button class="btn btn-dark add-to-cart">Agregar  
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="carro-icon" 
             viewBox="0 0 16 16" style="cursor: pointer;">
             <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
           </svg>
-        </a>
+        </button>
       </div>
     </div>
   </div>

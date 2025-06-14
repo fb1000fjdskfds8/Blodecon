@@ -1,4 +1,5 @@
 
+
 //crear
 async function crearProducto() {
   const nombre = document.getElementById("nombreProducto").value;
@@ -310,3 +311,4 @@ async function actualizarUsuario(id, btn) {
         });
       }
     }
+

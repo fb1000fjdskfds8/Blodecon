@@ -2,6 +2,7 @@ body {
       margin: 0;
       font-family: Arial, sans-serif;
       display: flex;
+      
     }
     .sidebar {
       width: 200px;
@@ -29,3 +30,11 @@ body {
     .hidden {
       display: none;
     }
+
+
+
+
+
+
+
+    
