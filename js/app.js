@@ -49,8 +49,10 @@ function renderCart() {
   cartItemsContainer.innerHTML = '';
   if (cart.length === 0) {
     cartDropdown.querySelector('.empty').style.display = 'block';
+    cartDropdown.querySelector('#btn-pagar').style.display = 'none';
   } else {
     cartDropdown.querySelector('.empty').style.display = 'none';
+    cartDropdown.querySelector('#btn-pagar').style.display = 'block';
     cart.forEach(item => {
       const cartItem = document.createElement('div');
       cartItem.classList.add('cart-item');
@@ -292,7 +294,7 @@ if (expresionEmail.test(email.value) && pass.value.length >= 6) {
   if (usuario.rol === "Administrador") {
     const adminLink = document.createElement("a");
     adminLink.href = "admin.html";
-    adminLink.innerText = "Apartado Administrador";
+    adminLink.innerText = "Administrador";
     adminLink.style.display = "block";
     adminLink.style.marginTop = "10px";
     adminLink.style.color = "black";              
@@ -532,7 +534,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (data.rol === "Administrador") {
         const adminLink = document.createElement("a");
         adminLink.href = "admin.html";        
-        adminLink.innerText = "Apartado Administrador";
+        adminLink.innerText = "Administrador";
         adminLink.style.color = "black";  
         adminLink.style.textDecoration = "none"; 
        adminLink.style.fontWeight = "bold";    

@@ -257,7 +257,7 @@ async function actualizarUsuario(id, btn) {
     mensajeError.style.color = "red";
     mensajeError.style.fontWeight = "bold";
     mensajeError.style.marginTop = "5px";
-    mensajeError.textContent = "⚠️ Solo puedes modificar el ROL del usuario.";
+    mensajeError.textContent = " Solo puedes modificar el ROL del usuario.";
     div.appendChild(mensajeError);
     return;
   }
